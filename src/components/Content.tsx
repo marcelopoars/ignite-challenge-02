@@ -1,6 +1,6 @@
-import { MovieCard } from "./MovieCard";
-
+import { memo } from "react";
 import "../styles/content.scss";
+import { MovieCard } from "./MovieCard";
 
 interface ContentProps {
   movies: Array<{
@@ -12,22 +12,24 @@ interface ContentProps {
   }>;
 }
 
-export function Content({ movies }: ContentProps) {
-  // Complete aqui
-
+export function ContentComponent({ movies }: ContentProps) {
   return (
     <main>
       <div className="movies-list">
-        {movies.map((movie) => (
+        {movies.map(({ imdbID, Title, Poster, Runtime, Ratings }) => (
           <MovieCard
-            key={movie.imdbID}
-            title={movie.Title}
-            poster={movie.Poster}
-            runtime={movie.Runtime}
-            rating={movie.Ratings[0].Value}
+            key={imdbID}
+            title={Title}
+            poster={Poster}
+            runtime={Runtime}
+            rating={Ratings[0].Value}
           />
         ))}
       </div>
     </main>
   );
 }
+
+export const Content = memo(ContentComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.movies, nextProps.movies);
+});

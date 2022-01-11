@@ -1,15 +1,24 @@
+import { memo } from "react";
 import "../styles/footer.scss";
 
-export function Footer() {
+interface FooterProps {
+  copy: string;
+  link: string;
+  author: string;
+}
+
+export function FooterComponent({ copy, link, author }: FooterProps) {
   return (
     <footer>
       <p>
-        Ignite - Desafio 02 | Desenvolvido com ❤ por{" "}
-        <a href="https://marcelopereira.dev" target="_blank" rel="noreferrer">
-          Marcelo Pereira
+        {copy}{" "}
+        <a href={link} target="_blank" rel="noreferrer">
+          {author}
         </a>
         .
       </p>
     </footer>
   );
 }
+
+export const Footer = memo(FooterComponent);

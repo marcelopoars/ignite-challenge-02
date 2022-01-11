@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
-
-import { Header } from "./components/Header";
-
-import { SideBar } from "./components/SideBar";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { Content } from "./components/Content";
-
-import { api } from "./services/api";
-
-import "./styles/global.scss";
 import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { SideBar } from "./components/SideBar";
+import { api } from "./services/api";
+import "./styles/global.scss";
 
 interface GenreResponseProps {
   id: number;
@@ -37,7 +33,7 @@ export function App() {
   );
 
   useEffect(() => {
-    api.get<GenreResponseProps[]>("genres").then((response) => {
+    api.get<GenreResponseProps[]>("genres").then((response: { data: SetStateAction<GenreResponseProps[]>; }) => {
       setGenres(response.data);
     });
   }, []);
@@ -45,16 +41,17 @@ export function App() {
   useEffect(() => {
     api
       .get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`)
-      .then((response) => {
+      .then((response: { data: SetStateAction<MovieProps[]>; }) => {
         setMovies(response.data);
       });
 
     api
       .get<GenreResponseProps>(`genres/${selectedGenreId}`)
-      .then((response) => {
+      .then((response: { data: SetStateAction<GenreResponseProps>; }) => {
         setSelectedGenre(response.data);
       });
   }, [selectedGenreId]);
+
 
   return (
     <>
@@ -70,7 +67,7 @@ export function App() {
           <Content movies={movies} />
         </div>
       </div>
-      <Footer />
+      <Footer copy="Ignite - Desafio 02 | Desenvolvido com ❤ por" link="https://marcelopereira.dev" author="Marcelo Pereira"  />
     </>
   );
 }
